@@ -8,6 +8,13 @@
       "when": 1688317049152,
       "tag": "0000_unique_stellaris",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1688341583705,
+      "tag": "0001_lucky_fixer",
+      "breakpoints": true
     }
   ]
 }
