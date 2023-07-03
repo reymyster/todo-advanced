@@ -15,6 +15,13 @@
       "when": 1688341583705,
       "tag": "0001_lucky_fixer",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1688353129983,
+      "tag": "0002_regular_rockslide",
+      "breakpoints": true
     }
   ]
 }

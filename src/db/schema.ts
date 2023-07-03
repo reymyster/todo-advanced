@@ -14,6 +14,7 @@ export const categories = pgTable(
   {
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 64 }),
+    description: varchar("description", { length: 256 }),
     created: timestamp("created", { withTimezone: true })
       .notNull()
       .defaultNow(),
