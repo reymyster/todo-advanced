@@ -20,7 +20,7 @@ export const categories = pgTable(
       .defaultNow(),
     modified: timestamp("modified", { withTimezone: true }),
     sortOrder: integer("sort_order").notNull().default(0),
-    enabled: boolean("enabled").notNull().default(false),
+    enabled: boolean("enabled").notNull().default(true),
   },
   (categories) => {
     return {
