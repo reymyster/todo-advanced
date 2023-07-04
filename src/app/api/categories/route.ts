@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { drizzle } from "drizzle-orm/vercel-postgres";
-import { eq } from "drizzle-orm";
+import { eq, asc, desc } from "drizzle-orm";
 import { db as vercel, sql } from "@vercel/postgres";
 import { categories } from "@/db/schema";
 import { Category, NewCategory } from "@/db/types";
@@ -9,7 +9,10 @@ import { revalidatePath } from "next/cache";
 export async function GET() {
   const db = drizzle(sql);
 
-  const allCategories = await db.select().from(categories);
+  const allCategories = await db
+    .select()
+    .from(categories)
+    .orderBy(asc(categories.sortOrder), asc(categories.name));
 
   return NextResponse.json(allCategories);
 }
