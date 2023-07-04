@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { fetchAllCategories } from "@/db/api";
+import classNames from "classnames";
 
 export default function Categories() {
   const { isLoading, error, data } = useQuery({
@@ -18,7 +19,10 @@ export default function Categories() {
       <ul>
         {data?.map((category) => {
           return (
-            <li key={category.id}>
+            <li
+              key={category.id}
+              className={classNames({ "text-red-700": !category.enabled })}
+            >
               <h3>{category.name}</h3>
               <p className="text-xs">{category.description}</p>
             </li>
