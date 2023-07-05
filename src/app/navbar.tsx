@@ -1,4 +1,5 @@
 import { Orbitron } from "next/font/google";
+import DesktopNavMenu from "./desktop-nav-menu";
 
 const logoFont = Orbitron({ subsets: ["latin"], weight: ["400"] });
 
@@ -12,6 +13,9 @@ export default function NavBar() {
               <span className={`mt-2 text-xl ${logoFont.className} text-white`}>
                 To Do&apos;s
               </span>
+            </div>
+            <div className="hidden lg:ml-6 lg:block">
+              <DesktopNavMenu />
             </div>
           </div>
         </div>

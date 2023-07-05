@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import NavBar from "./navbar";
 import Title from "./title";
 import { QueryProvider } from "./queryprovider";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,11 +26,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full bg-gray-100">
-      <body className={`${inter.className} h-full`}>
+      <body className={`${inter.className} h-full bg-gray-100`}>
         <QueryProvider>
           <div className="min-h-full">
-            <div className="bg-gray-800 pb-32">
-              <NavBar />
+            <div className="bg-slate-950 pb-32">
+              <ThemeProvider attribute="class" defaultTheme="dark">
+                <NavBar />
+              </ThemeProvider>
               <header className="py-10">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                   <Title />
