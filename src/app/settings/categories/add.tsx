@@ -1,8 +1,6 @@
 "use client";
 import { SyntheticEvent, useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { insertCategory } from "@/db/api";
-import { NewCategory } from "@/db/types";
+import { useCategoryMutation } from "@/db/api";
 
 export default function AddForm() {
   const [categoryName, setCategoryName] = useState<string>("");
@@ -13,19 +11,12 @@ export default function AddForm() {
     setDesc("");
   };
 
-  const queryClient = useQueryClient();
-  const mutation = useMutation({
-    mutationFn: insertCategory,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["categories"] });
-      onReset();
-    },
-  });
+  const mutation = useCategoryMutation({ onSuccess: onReset });
 
-  const onSave = (event: SyntheticEvent) => {
+  const onSave = async (event: SyntheticEvent) => {
     event.preventDefault();
     console.log({ categoryName, desc });
-    mutation.mutate({
+    await mutation.mutateAsync({
       name: categoryName,
       description: desc,
     });

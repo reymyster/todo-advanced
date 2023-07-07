@@ -30,9 +30,7 @@ export default function RootLayout({
         <QueryProvider>
           <div className="min-h-full">
             <div className="bg-slate-950 pb-32">
-              <ThemeProvider attribute="class" defaultTheme="dark">
-                <NavBar />
-              </ThemeProvider>
+              <NavBar />
               <header className="py-10">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                   <Title />

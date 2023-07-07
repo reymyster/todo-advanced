@@ -1,16 +1,12 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { fetchAllCategories } from "@/db/api";
+import { useCategories } from "@/db/api";
 import classNames from "classnames";
 import Link from "next/link";
 import AddForm from "./add";
 
 export default function Categories() {
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["categories"],
-    queryFn: fetchAllCategories,
-  });
+  const { isLoading, error, data } = useCategories();
 
   if (isLoading) return "Loading...";
 
