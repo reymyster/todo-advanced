@@ -10,13 +10,13 @@ export default function Categories() {
 
   if (isLoading) return "Loading...";
 
-  if (error && !data) return "An error has occurred";
+  if (error || !data) return "An error has occurred";
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 lg:px-8">
       <AddForm />
       <ul role="list" className="divide-y divide-gray-200">
-        {data?.map((category) => {
+        {data.map((category) => {
           return (
             <li
               key={category.id}

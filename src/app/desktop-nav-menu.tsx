@@ -3,42 +3,20 @@ import * as React from "react";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
+import { useCategories } from "@/db/api";
 
-const components: { title: string; href: string; description: string }[] = [
+interface IMenuItem {
+  title: string;
+  href: string;
+  description: string;
+}
+
+const defaultMenuItems: IMenuItem[] = [
   {
     title: "General",
     href: "/settings/categories",
     description:
       "A modal dialog that interrupts the user with important content and expects a response.",
-  },
-  {
-    title: "Hover Card",
-    href: "/settings/categories",
-    description:
-      "For sighted users to preview content available behind a link.",
-  },
-  {
-    title: "Progress",
-    href: "/settings/categories",
-    description:
-      "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-  },
-  {
-    title: "Scroll-area",
-    href: "/settings/categories",
-    description: "Visually or semantically separates content.",
-  },
-  {
-    title: "Tabs",
-    href: "/settings/categories",
-    description:
-      "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-  },
-  {
-    title: "Tooltip",
-    href: "/settings/categories",
-    description:
-      "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
   },
 ];
 
@@ -55,6 +33,31 @@ import {
 } from "@/components/ui/navigation-menu";
 
 export default function DesktopNavMenu() {
+  const [components, setComponents] = React.useState(defaultMenuItems);
+  const { isLoading, error, data: categoryData } = useCategories();
+
+  React.useEffect(() => {
+    if (isLoading) return; // still loading
+
+    if (error || !categoryData) {
+      console.error("An error loading data.");
+      return;
+    }
+
+    const menuCategories = categoryData
+      .filter((c) => c.enabled)
+      .map(
+        (c) =>
+          ({
+            title: c.name,
+            href: `/categories/${c.name?.replaceAll(" ", "_").toLowerCase()}`,
+            description: c.description,
+          } as IMenuItem)
+      );
+
+    setComponents(menuCategories);
+  }, [isLoading, error, categoryData]);
+
   return (
     <NavigationMenu>
       <NavigationMenuList>
