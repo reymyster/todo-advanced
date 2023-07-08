@@ -3,6 +3,8 @@ import { drizzle } from "drizzle-orm/vercel-postgres";
 import { migrate } from "drizzle-orm/vercel-postgres/migrator";
 import { db } from "@vercel/postgres";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
   const client = await db.connect();
   const driz = drizzle(client);

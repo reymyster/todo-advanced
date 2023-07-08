@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import NavBar from "./navbar";
 import Title from "./title";
 import { QueryProvider } from "./queryprovider";
-import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,8 +20,10 @@ const year = new Date().getUTCFullYear().toString();
 
 export default function RootLayout({
   children,
+  modal,
 }: {
   children: React.ReactNode;
+  modal?: React.ReactNode;
 }) {
   return (
     <html lang="en" className="h-full bg-gray-100">
@@ -49,6 +50,7 @@ export default function RootLayout({
                 Copyright &copy; {year}
               </div>
             </footer>
+            {modal}
           </div>
         </QueryProvider>
       </body>
