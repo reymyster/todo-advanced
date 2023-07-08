@@ -13,7 +13,7 @@ export const categories = pgTable(
   "categories",
   {
     id: serial("id").primaryKey(),
-    name: varchar("name", { length: 64 }),
+    name: varchar("name", { length: 64 }).notNull(),
     description: varchar("description", { length: 256 }),
     created: timestamp("created", { withTimezone: true })
       .notNull()
@@ -26,7 +26,7 @@ export const categories = pgTable(
     return {
       nameIndex: uniqueIndex("name_idx").on(categories.name),
     };
-  }
+  },
 );
 
 export const todos = pgTable("todos", {

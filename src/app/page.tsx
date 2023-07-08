@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { PlusIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
@@ -13,16 +13,6 @@ export default function Home() {
             New To-Do
           </Link>
         </Button>
-      </div>
-      <div>
-        <Link href="/todo/add" prefetch={false}>
-          Plain Link
-        </Link>
-      </div>
-      <div>
-        <Link className={buttonVariants()} href="/todo/add" prefetch={false}>
-          Button Variants Link
-        </Link>
       </div>
     </main>
   );

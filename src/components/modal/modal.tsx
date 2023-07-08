@@ -17,14 +17,14 @@ export default function Modal({ children }: { children: React.ReactNode }) {
         if (onDismiss) onDismiss();
       }
     },
-    [onDismiss, overlay, wrapper]
+    [onDismiss, overlay, wrapper],
   );
 
   const onKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape") onDismiss();
     },
-    [onDismiss]
+    [onDismiss],
   );
 
   useEffect(() => {
@@ -35,12 +35,12 @@ export default function Modal({ children }: { children: React.ReactNode }) {
   return (
     <div
       ref={overlay}
-      className="fixed bottom-0 left-0 right-0 top-0 z-10 mx-auto bg-black/50 backdrop-blur-sm"
+      className="fixed bottom-0 left-0 right-0 top-0 z-10 mx-auto bg-gray-500/30 backdrop-blur-sm"
       onClick={onClick}
     >
       <div
         ref={wrapper}
-        className="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 p-6 sm:w-10/12 md:w-8/12 lg:w-1/2"
+        className="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 p-6 sm:w-10/12 md:w-8/12 lg:w-1/2 bg-white rounded-sm shadow-2xl"
       >
         {children}
       </div>

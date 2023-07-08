@@ -1,25 +1,31 @@
 "use client";
 import { SyntheticEvent, useState } from "react";
-import { useCategoryMutation } from "@/db/api";
+import { useCategoryCreateMutation } from "@/db/api";
+import { Button } from "@/components/ui/button";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { cn } from "@/lib/utils";
 
 export default function AddForm() {
   const [categoryName, setCategoryName] = useState<string>("");
   const [desc, setDesc] = useState<string>("");
+  const [isSaving, setIsSaving] = useState(false);
 
   const onReset = () => {
     setCategoryName("");
     setDesc("");
   };
 
-  const mutation = useCategoryMutation({ onSuccess: onReset });
+  const mutation = useCategoryCreateMutation({ onSuccess: onReset });
 
   const onSave = async (event: SyntheticEvent) => {
     event.preventDefault();
+    setIsSaving(true);
     console.log({ categoryName, desc });
     await mutation.mutateAsync({
       name: categoryName,
       description: desc,
     });
+    setIsSaving(false);
   };
 
   return (
@@ -72,20 +78,15 @@ export default function AddForm() {
         </div>
       </div>
       <div className="mb-2 mt-4 flex items-center justify-end gap-x-6">
-        <button
-          type="button"
-          className="text-sm font-semibold leading-6 text-gray-900"
-          onClick={onReset}
-        >
+        <Button variant="ghost" onClick={onReset}>
           Reset
-        </button>
-        <button
-          type="submit"
-          className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          onClick={(e) => onSave(e)}
-        >
+        </Button>
+        <Button disabled={isSaving} onClick={(e) => onSave(e)}>
+          <ReloadIcon
+            className={cn("mr-2 h-4 w-4 animate-spin", !isSaving && "hidden")}
+          />
           Save
-        </button>
+        </Button>
       </div>
     </fieldset>
   );

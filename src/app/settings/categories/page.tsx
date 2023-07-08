@@ -4,9 +4,18 @@ import { useCategories } from "@/db/api";
 import classNames from "classnames";
 import Link from "next/link";
 import AddForm from "./add";
+import { Button } from "@/components/ui/button";
+import { useCategoryDeleteMutation } from "@/db/api";
 
 export default function Categories() {
   const { isLoading, error, data } = useCategories();
+  const deleteMutation = useCategoryDeleteMutation();
+
+  const onDelete = async (id: number, name: string) => {
+    if (confirm(`Delete category ${name}?`)) {
+      await deleteMutation.mutateAsync(id);
+    }
+  };
 
   if (isLoading) return "Loading...";
 
@@ -31,7 +40,7 @@ export default function Categories() {
                     className={classNames(
                       { hidden: category.enabled },
                       "bg-red-50 text-red-700 ring-red-600/20",
-                      "mt-0.5 whitespace-nowrap rounded-md px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset"
+                      "mt-0.5 whitespace-nowrap rounded-md px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset",
                     )}
                   >
                     Disabled
@@ -55,6 +64,14 @@ export default function Categories() {
                 >
                   Edit<span className="sr-only"> {category.name}</span>
                 </Link>
+                <Button
+                  variant="destructive"
+                  onClick={async (e) =>
+                    await onDelete(category.id, category.name)
+                  }
+                >
+                  Delete
+                </Button>
               </div>
             </li>
           );
