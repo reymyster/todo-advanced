@@ -31,7 +31,9 @@ export const categories = pgTable(
 
 export const todos = pgTable("todos", {
   id: serial("id").primaryKey(),
-  categoryId: integer("category_id").references(() => categories.id),
+  categoryId: integer("category_id")
+    .references(() => categories.id)
+    .notNull(),
   title: varchar("title", { length: 256 }).notNull(),
   description: varchar("description", { length: 1024 }),
   due: date("due"),
