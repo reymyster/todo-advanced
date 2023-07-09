@@ -9,7 +9,6 @@ import {
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -53,11 +52,7 @@ const formSchema = z.object({
 
 export default function NewTodo() {
   const [isSaving, setIsSaving] = useState(false);
-  const {
-    isLoading: categoriesLoading,
-    error: categoriesLoadingError,
-    data: categories,
-  } = useCategories();
+  const { data: categories } = useCategories();
   const router = useRouter();
 
   const onCancel = useCallback(() => router.back(), [router]);
@@ -70,7 +65,6 @@ export default function NewTodo() {
       categoryId: undefined,
       title: "",
       description: undefined,
-      // due: new Date(new Date().setMonth(new Date().getMonth() + 1)),
       due: null,
     },
   });
@@ -237,7 +231,15 @@ export default function NewTodo() {
               <Button variant="ghost" onClick={onCancel}>
                 Cancel
               </Button>
-              <Button type="submit">Save</Button>
+              <Button type="submit">
+                <ReloadIcon
+                  className={cn(
+                    "mr-2 h-4 w-4 animate-spin",
+                    !isSaving && "hidden",
+                  )}
+                />
+                Save
+              </Button>
             </div>
           </form>
         </Form>
