@@ -1,15 +1,22 @@
 "use client";
 import { useState, useCallback } from "react";
-import { ReloadIcon, CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
+import {
+  ReloadIcon,
+  CaretSortIcon,
+  CheckIcon,
+  CalendarIcon,
+} from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useCategories } from "@/db/api";
+import { useCategories, useTodoCreateMutation } from "@/db/api";
 
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Command,
   CommandEmpty,
@@ -55,18 +62,27 @@ export default function NewTodo() {
 
   const onCancel = useCallback(() => router.back(), [router]);
 
+  const mutation = useTodoCreateMutation({ onSuccess: onCancel });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       categoryId: undefined,
       title: "",
       description: undefined,
+      // due: new Date(new Date().setMonth(new Date().getMonth() + 1)),
       due: null,
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log({ values });
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSaving(true);
+    await mutation.mutateAsync({
+      categoryId: values.categoryId,
+      title: values.title,
+      description: values.description,
+      due: values.due !== null ? format(values.due, "yyyy-MM-dd") : null,
+    });
   }
 
   return (
@@ -133,6 +149,52 @@ export default function NewTodo() {
                   </Popover>
                   <FormDescription>
                     Category for this to-do item.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="due"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Due</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-[240px] pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground",
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        /* @ts-ignore */
+                        selected={field.value}
+                        /* @ts-ignore */
+                        onSelect={field.onChange}
+                        /* @ts-ignore */
+                        disabled={(date) => {
+                          date < new Date();
+                        }}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormDescription>
+                    When this to-do list is expected to be done.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
