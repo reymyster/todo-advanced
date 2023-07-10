@@ -5,7 +5,7 @@ const logoFont = Orbitron({ subsets: ["latin"], weight: ["400"] });
 
 export default function NavBar() {
   return (
-    <nav>
+    <nav className="bg-gray-100">
       <div className="mx-auto max-w-7xl bg-gray-100 px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           <div className="flex flex-1 items-center justify-center lg:items-stretch lg:justify-start">

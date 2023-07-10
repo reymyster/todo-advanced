@@ -9,7 +9,7 @@ export default function Home() {
   const query = useTodos();
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-6 sm:px-6 lg:px-8">
+    <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
       <div className="flex justify-end py-2">
         <Button asChild>
           <Link href="/todo/add" prefetch={false}>
