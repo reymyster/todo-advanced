@@ -1,6 +1,10 @@
 "use client";
 
-import { StopwatchIcon, CheckCircledIcon } from "@radix-ui/react-icons";
+import {
+  StopwatchIcon,
+  CheckCircledIcon,
+  CrossCircledIcon,
+} from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 import { ToDo } from "@/db/types";
 import { format } from "date-fns";
@@ -28,18 +32,24 @@ export const columnsAll: ColumnDef<ToDo>[] = [
     accessorKey: "completed",
     header: "Status",
     cell: ({ row }) => {
+      const deleted = row.getValue<boolean>("deleted");
       const completed = row.getValue<boolean>("completed");
-      const formatted = completed ? "Done" : "In Progress";
       const classNames = "mr-2 h-4 w-4 text-muted-foreground";
-      const icon = completed ? (
-        <CheckCircledIcon className={classNames} />
-      ) : (
-        <StopwatchIcon className={classNames} />
-      );
+      let icon: JSX.Element, text: string;
+      if (deleted) {
+        icon = <CrossCircledIcon className={classNames} />;
+        text = "Canceled";
+      } else if (completed) {
+        icon = <CheckCircledIcon className={classNames} />;
+        text = "Done";
+      } else {
+        icon = <StopwatchIcon className={classNames} />;
+        text = "In Progress";
+      }
       return (
         <div className="flex w-[100px] items-center">
           {icon}
-          <span>{formatted}</span>
+          <span>{text}</span>
         </div>
       );
     },
