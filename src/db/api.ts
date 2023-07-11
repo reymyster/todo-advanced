@@ -55,6 +55,8 @@ export function useCategories() {
     queryKey: [QUERY_KEYS.CATEGORIES],
     queryFn: fetchAllCategories,
     retry: 1,
+    cacheTime: 120 * 60 * 1000,
+    staleTime: 60 * 60 * 1000,
   });
   return query;
 }
@@ -102,6 +104,8 @@ export function useTodos() {
     queryKey: [QUERY_KEYS.TODOS],
     queryFn: fetchAllTodos,
     retry: 1,
+    cacheTime: 120 * 60 * 1000,
+    staleTime: 60 * 60 * 1000,
   });
   return query;
 }
