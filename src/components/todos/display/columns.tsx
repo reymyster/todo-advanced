@@ -6,18 +6,10 @@ import {
   CrossCircledIcon,
 } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
-import { ToDo } from "@/db/types";
+import { ToDoDisplay } from "./data";
 import { format } from "date-fns";
 
-export const columnsAll: ColumnDef<ToDo>[] = [
-  {
-    accessorKey: "title",
-    header: "Title",
-  },
-  {
-    accessorKey: "description",
-    header: "Description",
-  },
+export const columnsAll: ColumnDef<ToDoDisplay>[] = [
   {
     accessorKey: "due",
     header: "Due",
@@ -29,22 +21,38 @@ export const columnsAll: ColumnDef<ToDo>[] = [
     },
   },
   {
-    accessorKey: "completed",
+    accessorKey: "categoryName",
+    header: "Category",
+  },
+  {
+    accessorKey: "title",
+    header: "Title",
+  },
+  {
+    accessorKey: "description",
+    header: "Description",
+  },
+  {
+    accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const deleted = row.getValue<boolean>("deleted");
-      const completed = row.getValue<boolean>("completed");
+      const status = row.getValue<string>("status");
       const classNames = "mr-2 h-4 w-4 text-muted-foreground";
       let icon: JSX.Element, text: string;
-      if (deleted) {
-        icon = <CrossCircledIcon className={classNames} />;
-        text = "Canceled";
-      } else if (completed) {
-        icon = <CheckCircledIcon className={classNames} />;
-        text = "Done";
-      } else {
-        icon = <StopwatchIcon className={classNames} />;
-        text = "In Progress";
+      switch (status) {
+        case "canceled":
+          icon = <CrossCircledIcon className={classNames} />;
+          text = "Canceled";
+          break;
+        case "closed":
+          icon = <CheckCircledIcon className={classNames} />;
+          text = "Done";
+          break;
+        case "open":
+        default:
+          icon = <StopwatchIcon className={classNames} />;
+          text = "In Progress";
+          break;
       }
       return (
         <div className="flex w-[100px] items-center">
