@@ -1,4 +1,10 @@
+import * as React from "react";
 import { ToDo, Category } from "@/db/types";
+import {
+  StopwatchIcon,
+  CheckCircledIcon,
+  CrossCircledIcon,
+} from "@radix-ui/react-icons";
 
 type ToDoCalculatedColumns = {
   categoryName: string;
@@ -6,6 +12,12 @@ type ToDoCalculatedColumns = {
 };
 
 export type ToDoDisplay = ToDo & ToDoCalculatedColumns;
+
+export type ColumnFilterValue = {
+  label: string;
+  value: string;
+  icon?: React.ComponentType<{ className?: string }>;
+};
 
 export function transformToDosForTableDisplay({
   todos,
@@ -25,3 +37,21 @@ export function transformToDosForTableDisplay({
     } as ToDoDisplay;
   });
 }
+
+export const statuses: ColumnFilterValue[] = [
+  {
+    value: "canceled",
+    label: "Canceled",
+    icon: CrossCircledIcon,
+  },
+  {
+    value: "closed",
+    label: "Closed",
+    icon: CheckCircledIcon,
+  },
+  {
+    value: "open",
+    label: "In Progress",
+    icon: StopwatchIcon,
+  },
+];

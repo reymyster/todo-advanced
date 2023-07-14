@@ -2,7 +2,7 @@
 import { useMemo } from "react";
 import { ToDo, Category } from "@/db/types";
 import { DataTable } from "./data-table";
-import { transformToDosForTableDisplay } from "./data";
+import { transformToDosForTableDisplay, ColumnFilterValue } from "./data";
 import { columnsAll } from "./columns";
 
 export default function ToDoTable({
@@ -17,9 +17,22 @@ export default function ToDoTable({
     [data, categories],
   );
 
+  const categoriesForFiltering = useMemo(
+    () =>
+      categories.map(
+        (c) => ({ value: c.name, label: c.name }) as ColumnFilterValue,
+      ),
+    [categories],
+  );
+
   return (
     <div>
-      <DataTable columns={columnsAll} data={displayData} />
+      <DataTable
+        columns={columnsAll}
+        data={displayData}
+        initialColumnFilters={[{ id: "status", value: ["open"] }]}
+        categoriesForFiltering={categoriesForFiltering}
+      />
     </div>
   );
 }

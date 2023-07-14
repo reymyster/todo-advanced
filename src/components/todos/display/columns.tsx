@@ -1,12 +1,7 @@
 "use client";
 
-import {
-  StopwatchIcon,
-  CheckCircledIcon,
-  CrossCircledIcon,
-} from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
-import { ToDoDisplay } from "./data";
+import { ToDoDisplay, statuses } from "./data";
 import { format } from "date-fns";
 
 export const columnsAll: ColumnDef<ToDoDisplay>[] = [
@@ -23,6 +18,9 @@ export const columnsAll: ColumnDef<ToDoDisplay>[] = [
   {
     accessorKey: "categoryName",
     header: "Category",
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
   },
   {
     accessorKey: "title",
@@ -36,30 +34,23 @@ export const columnsAll: ColumnDef<ToDoDisplay>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const status = row.getValue<string>("status");
-      const classNames = "mr-2 h-4 w-4 text-muted-foreground";
-      let icon: JSX.Element, text: string;
-      switch (status) {
-        case "canceled":
-          icon = <CrossCircledIcon className={classNames} />;
-          text = "Canceled";
-          break;
-        case "closed":
-          icon = <CheckCircledIcon className={classNames} />;
-          text = "Done";
-          break;
-        case "open":
-        default:
-          icon = <StopwatchIcon className={classNames} />;
-          text = "In Progress";
-          break;
-      }
+      const status = statuses.find(
+        (s) => s.value === row.getValue<string>("status"),
+      );
+
+      if (!status) return null;
+
       return (
         <div className="flex w-[100px] items-center">
-          {icon}
-          <span>{text}</span>
+          {status.icon && (
+            <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+          )}
+          <span>{status.label}</span>
         </div>
       );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
     },
   },
 ];
