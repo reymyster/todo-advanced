@@ -2,6 +2,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import NavBar from "./navbar";
 import Title from "./title";
+import Footer from "./footer";
 import { QueryProvider } from "./queryprovider";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -15,8 +16,6 @@ export const metadata = {
     maximumScale: 1,
   },
 };
-
-const year = new Date().getUTCFullYear().toString();
 
 export default function RootLayout({
   children,
@@ -45,11 +44,7 @@ export default function RootLayout({
                 </div>
               </div>
             </main>
-            <footer className="bg-gray-800 py-4">
-              <div className="text-center text-[10px] text-white">
-                Copyright &copy; {year}
-              </div>
-            </footer>
+            <Footer />
             {modal}
           </div>
         </QueryProvider>
