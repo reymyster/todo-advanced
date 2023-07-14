@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/table";
 
 import { DataTableToolbar } from "./data-table-toolbar";
+import { DataTablePagination } from "./data-table-pagination";
 import { ColumnFilterValue } from "./data";
 
 interface DataTableProps<TData, TValue> {
@@ -114,6 +115,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
+      <DataTablePagination table={table} />
     </div>
   );
 }
