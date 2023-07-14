@@ -32,7 +32,8 @@ export function DataTablePagination<TData>({
   return (
     <div className="flex items-center justify-between px-2">
       <div className="flex-1 text-sm text-muted-foreground">
-        0 of {rowTotal} row{rowTotal !== 1 ? "s" : ""} selected.
+        {table.getFilteredSelectedRowModel().rows.length} of {rowTotal} row
+        {rowTotal !== 1 ? "s" : ""} selected.
       </div>
       <div
         className={cn(

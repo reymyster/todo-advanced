@@ -61,6 +61,14 @@ export function DataTableToolbar<TData>({
             New
           </Link>
         </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          className="ml-auto hidden h-8 lg:flex"
+          disabled={table.getFilteredSelectedRowModel().rows.length === 0}
+        >
+          Actions
+        </Button>
       </div>
     </div>
   );
