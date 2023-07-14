@@ -4,8 +4,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 const year = new Date().getUTCFullYear().toString();
 
 export default function Footer() {
-  const { scrollYProgress } = useScroll();
-  const bottom = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  const { scrollY } = useScroll();
+  const bottom = useTransform(scrollY, [0, 50], [0, -50]);
 
   return (
     <motion.div style={{ bottom }} className="fixed left-0 right-0">
