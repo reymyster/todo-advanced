@@ -39,7 +39,7 @@ export default function RootLayout({
               </header>
             </div>
             <main className="-mt-32 min-h-[77vh]">
-              <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+              <div className="mx-auto max-w-screen-2xl px-4 pb-12 sm:px-6 lg:px-8">
                 <div className="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
                   {children}
                 </div>

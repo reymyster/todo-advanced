@@ -30,6 +30,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   initialColumnFilters?: ColumnFiltersState;
   categoriesForFiltering?: ColumnFilterValue[];
+  newTodoURL: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -37,6 +38,7 @@ export function DataTable<TData, TValue>({
   data,
   initialColumnFilters,
   categoriesForFiltering,
+  newTodoURL,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     initialColumnFilters ?? [],
@@ -60,6 +62,7 @@ export function DataTable<TData, TValue>({
       <DataTableToolbar
         table={table}
         categoriesForFiltering={categoriesForFiltering}
+        newTodoURL={newTodoURL}
       />
       <div className="rounded-md border">
         <Table>

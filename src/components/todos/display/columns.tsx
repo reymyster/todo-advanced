@@ -6,14 +6,12 @@ import { format } from "date-fns";
 
 export const columnsAll: ColumnDef<ToDoDisplay>[] = [
   {
-    accessorKey: "due",
-    header: "Due",
-    cell: ({ row }) => {
-      const d = row.getValue<string | null>("due");
-      const formatted = d === null ? "" : format(new Date(d), "yyyy-MM-dd");
-
-      return <div>{formatted}</div>;
-    },
+    accessorKey: "title",
+    header: "Title",
+  },
+  {
+    accessorKey: "description",
+    header: "Description",
   },
   {
     accessorKey: "categoryName",
@@ -23,12 +21,15 @@ export const columnsAll: ColumnDef<ToDoDisplay>[] = [
     },
   },
   {
-    accessorKey: "title",
-    header: "Title",
-  },
-  {
-    accessorKey: "description",
-    header: "Description",
+    accessorKey: "due",
+    header: "Due",
+    cell: ({ row }) => {
+      const d = row.getValue<string | null>("due");
+      const formatted = d === null ? "" : format(new Date(d), "yyyy-MM-dd");
+
+      return <div className="w-24">{formatted}</div>;
+    },
+    size: 96,
   },
   {
     accessorKey: "status",

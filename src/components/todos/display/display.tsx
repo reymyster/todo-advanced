@@ -8,9 +8,11 @@ import ToDoTable from "./table";
 export default function Display({
   query,
   queryCategory,
+  newTodoURL,
 }: {
   query: UseQueryResult<ToDo[], unknown>;
   queryCategory: UseQueryResult<Category[], unknown>;
+  newTodoURL: string;
 }) {
   const { isLoading, error, data } = query;
   const {
@@ -32,7 +34,7 @@ export default function Display({
 
   return (
     <div className="mt-2">
-      <ToDoTable data={data} categories={categories} />
+      <ToDoTable data={data} categories={categories} newTodoURL={newTodoURL} />
     </div>
   );
 }

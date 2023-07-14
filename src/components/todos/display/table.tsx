@@ -8,9 +8,11 @@ import { columnsAll } from "./columns";
 export default function ToDoTable({
   data,
   categories,
+  newTodoURL,
 }: {
   data: ToDo[];
   categories: Category[];
+  newTodoURL: string;
 }) {
   const displayData = useMemo(
     () => transformToDosForTableDisplay({ todos: data, categories }),
@@ -32,6 +34,7 @@ export default function ToDoTable({
         data={displayData}
         initialColumnFilters={[{ id: "status", value: ["open"] }]}
         categoriesForFiltering={categoriesForFiltering}
+        newTodoURL={newTodoURL}
       />
     </div>
   );

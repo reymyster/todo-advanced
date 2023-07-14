@@ -1,10 +1,10 @@
 "use client";
 
-import { Cross2Icon } from "@radix-ui/react-icons";
+import { Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-import { DataTableViewOptions } from "./data-table-view-options";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 
 import { statuses, ColumnFilterValue } from "./data";
@@ -12,11 +12,13 @@ import { statuses, ColumnFilterValue } from "./data";
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   categoriesForFiltering?: ColumnFilterValue[];
+  newTodoURL: string;
 }
 
 export function DataTableToolbar<TData>({
   table,
   categoriesForFiltering,
+  newTodoURL,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
@@ -48,7 +50,17 @@ export function DataTableToolbar<TData>({
         )}
       </div>
       <div className="flex items-center space-x-2">
-        <DataTableViewOptions table={table} />
+        <Button
+          variant="outline"
+          size="sm"
+          className="ml-auto hidden h-8 lg:flex"
+          asChild
+        >
+          <Link href={newTodoURL} prefetch={false}>
+            <PlusIcon className="mr-2 h-4 w-4" />
+            New
+          </Link>
+        </Button>
       </div>
     </div>
   );
