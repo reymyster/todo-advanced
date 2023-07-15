@@ -5,6 +5,8 @@ import {
   CheckCircledIcon,
   CrossCircledIcon,
 } from "@radix-ui/react-icons";
+import { create } from "zustand";
+import { ColumnFiltersState } from "@tanstack/react-table";
 
 type ToDoCalculatedColumns = {
   categoryName: string;
@@ -55,3 +57,21 @@ export const statuses: ColumnFilterValue[] = [
     icon: StopwatchIcon,
   },
 ];
+
+export const initialColumnFilters: ColumnFiltersState = [
+  { id: "status", value: ["open"] },
+];
+
+type State = {
+  initialColumnFilters: ColumnFiltersState;
+};
+
+type Action = {
+  setInitialColumnFilters: (filter: State["initialColumnFilters"]) => void;
+};
+
+export const useStore = create<State & Action>((set) => ({
+  initialColumnFilters: [{ id: "status", value: ["open"] }],
+  setInitialColumnFilters: (filter) =>
+    set(() => ({ initialColumnFilters: filter })),
+}));

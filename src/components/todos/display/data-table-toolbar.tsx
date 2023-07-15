@@ -8,7 +8,7 @@ import Link from "next/link";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import { DataTableViewOptions } from "./data-table-view-options";
 
-import { statuses, ColumnFilterValue } from "./data";
+import { statuses, ColumnFilterValue, initialColumnFilters } from "./data";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -21,7 +21,9 @@ export function DataTableToolbar<TData>({
   categoriesForFiltering,
   newTodoURL,
 }: DataTableToolbarProps<TData>) {
-  const isFiltered = table.getState().columnFilters.length > 0;
+  const areFiltersChanged =
+    JSON.stringify(table.getState().columnFilters) !==
+    JSON.stringify(initialColumnFilters);
 
   return (
     <div className="flex items-center justify-between">
@@ -40,7 +42,7 @@ export function DataTableToolbar<TData>({
             options={categoriesForFiltering ?? []}
           />
         )}
-        {isFiltered && (
+        {areFiltersChanged && (
           <Button
             variant="ghost"
             onClick={() => table.resetColumnFilters()}

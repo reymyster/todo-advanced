@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   ColumnDef,
@@ -25,12 +25,11 @@ import {
 
 import { DataTableToolbar } from "./data-table-toolbar";
 import { DataTablePagination } from "./data-table-pagination";
-import { ColumnFilterValue } from "./data";
+import { ColumnFilterValue, useStore, initialColumnFilters } from "./data";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  initialColumnFilters?: ColumnFiltersState;
   categoriesForFiltering?: ColumnFilterValue[];
   newTodoURL: string;
 }
@@ -38,7 +37,6 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
-  initialColumnFilters,
   categoriesForFiltering,
   newTodoURL,
 }: DataTableProps<TData, TValue>) {

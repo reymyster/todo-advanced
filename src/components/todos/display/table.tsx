@@ -1,8 +1,12 @@
 "use client";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { ToDo, Category } from "@/db/types";
 import { DataTable } from "./data-table";
-import { transformToDosForTableDisplay, ColumnFilterValue } from "./data";
+import {
+  transformToDosForTableDisplay,
+  ColumnFilterValue,
+  useStore,
+} from "./data";
 import { columnsAll } from "./columns";
 
 export default function ToDoTable({
@@ -32,7 +36,6 @@ export default function ToDoTable({
       <DataTable
         columns={columnsAll}
         data={displayData}
-        initialColumnFilters={[{ id: "status", value: ["open"] }]}
         categoriesForFiltering={categoriesForFiltering}
         newTodoURL={newTodoURL}
       />
