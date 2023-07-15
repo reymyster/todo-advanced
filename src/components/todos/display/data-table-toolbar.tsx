@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import { DataTableViewOptions } from "./data-table-view-options";
 
 import { statuses, ColumnFilterValue } from "./data";
 
@@ -69,6 +70,7 @@ export function DataTableToolbar<TData>({
         >
           Actions
         </Button>
+        <DataTableViewOptions table={table} />
       </div>
     </div>
   );
