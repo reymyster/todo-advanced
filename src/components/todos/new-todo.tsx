@@ -228,7 +228,7 @@ export default function NewTodo() {
               )}
             />
             <div className="flex items-center justify-end gap-x-6">
-              <Button variant="ghost" onClick={onCancel}>
+              <Button type="button" variant="ghost" onClick={onCancel}>
                 Cancel
               </Button>
               <Button type="submit">
