@@ -4,7 +4,7 @@ import { useState } from "react";
 import { DotsHorizontalIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { Row } from "@tanstack/react-table";
 import { ToDoDisplay, statuses } from "./data";
-import { useTodoCompleteMutation } from "@/db/api";
+import { useTodoCompleteMutation, useTodoDuplicateMutation } from "@/db/api";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
@@ -34,7 +34,12 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
     await completeMutation.mutateAsync([todoID]);
   };
 
-  const isLoading = completeMutation.isLoading;
+  const duplicateMutation = useTodoDuplicateMutation();
+  const duplicateTodo = async () => {
+    await duplicateMutation.mutateAsync([todoID]);
+  };
+
+  const isLoading = completeMutation.isLoading || duplicateMutation.isLoading;
 
   return (
     <DropdownMenu>
@@ -54,11 +59,17 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
         <DropdownMenuItem>Edit</DropdownMenuItem>
+        <DropdownMenuItem onClick={duplicateTodo}>Make a copy</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={markComplete}>
-          Mark Completed
+        <DropdownMenuItem
+          onClick={markComplete}
+          disabled={row.original.completed}
+        >
+          Complete
         </DropdownMenuItem>
-        <DropdownMenuItem>Cancel</DropdownMenuItem>
+        <DropdownMenuItem disabled={row.original.deleted}>
+          Cancel
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

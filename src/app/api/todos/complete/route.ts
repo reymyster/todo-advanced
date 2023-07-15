@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     .where(and(inArray(todos.id, ids), ne(todos.completed, true)))
     .returning({ updatedId: todos.id });
 
-  if (updated.length > 0) revalidatePath("/api/toods");
+  if (updated.length > 0) revalidatePath("/api/todos");
 
   return NextResponse.json(updated);
 }

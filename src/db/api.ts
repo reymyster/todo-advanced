@@ -141,3 +141,19 @@ export function useTodoCompleteMutation(args?: { onSuccess?: () => void }) {
   });
   return mutation;
 }
+
+async function duplicateTodos(ids: number[]) {
+  return await apiPOST("todos/duplicate", ids);
+}
+
+export function useTodoDuplicateMutation(args?: { onSuccess?: () => void }) {
+  const client = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: duplicateTodos,
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: [QUERY_KEYS.TODOS] });
+      args?.onSuccess?.();
+    },
+  });
+  return mutation;
+}
