@@ -1,9 +1,12 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ToDoDisplay, statuses } from "./data";
 import { format } from "date-fns";
+
+import { DataTableRowActions } from "./data-table-row-actions";
 
 export const columnsAll: ColumnDef<ToDoDisplay>[] = [
   {
@@ -75,5 +78,21 @@ export const columnsAll: ColumnDef<ToDoDisplay>[] = [
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
+  },
+  {
+    id: "actions",
+    header: ({ table }) => {
+      return (
+        <Button
+          variant="outline"
+          size="sm"
+          className="mx-auto h-8 lg:flex"
+          disabled={table.getFilteredSelectedRowModel().rows.length === 0}
+        >
+          Actions
+        </Button>
+      );
+    },
+    cell: ({ row }) => <DataTableRowActions row={row} />,
   },
 ];
