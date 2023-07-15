@@ -22,7 +22,11 @@ export default function Display({
   } = queryCategory;
 
   if (isLoading || categoriesLoading)
-    return <ReloadIcon className="mr-2 h-8 w-8 animate-spin" />;
+    return (
+      <div className="flex items-center justify-center">
+        <ReloadIcon className="h-8 w-8 animate-spin" />
+      </div>
+    );
 
   if (
     error ||
