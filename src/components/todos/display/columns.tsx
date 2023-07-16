@@ -11,6 +11,7 @@ import {
   useTodoCompleteMutation,
   useTodoDuplicateMutation,
   useTodoReopenMutation,
+  useTodoCancelMutation,
 } from "@/db/api";
 
 import {
@@ -122,6 +123,11 @@ export const columnsAll: ColumnDef<ToDoDisplay>[] = [
         await reopenMutation.mutateAsync(rowIDs);
       };
 
+      const cancelMutation = useTodoCancelMutation();
+      const cancel = async () => {
+        await cancelMutation.mutateAsync(rowIDs);
+      };
+
       const isLoading = completeMutation.isLoading || reopenMutation.isLoading;
 
       return (
@@ -146,7 +152,7 @@ export const columnsAll: ColumnDef<ToDoDisplay>[] = [
             <DropdownMenuItem onClick={duplicate}>Make a copy</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={complete}>Complete</DropdownMenuItem>
-            <DropdownMenuItem>Cancel</DropdownMenuItem>
+            <DropdownMenuItem onClick={cancel}>Cancel</DropdownMenuItem>
             <DropdownMenuItem onClick={reopen}>Re-Open</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

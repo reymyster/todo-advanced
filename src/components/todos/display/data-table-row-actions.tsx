@@ -8,6 +8,7 @@ import {
   useTodoCompleteMutation,
   useTodoDuplicateMutation,
   useTodoReopenMutation,
+  useTodoCancelMutation,
 } from "@/db/api";
 import { cn } from "@/lib/utils";
 
@@ -48,10 +49,16 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
     await reopenMutation.mutateAsync([todoID]);
   };
 
+  const cancelMutation = useTodoCancelMutation();
+  const cancel = async () => {
+    await cancelMutation.mutateAsync([todoID]);
+  };
+
   const isLoading =
     completeMutation.isLoading ||
     duplicateMutation.isLoading ||
-    reopenMutation.isLoading;
+    reopenMutation.isLoading ||
+    cancelMutation.isLoading;
 
   return (
     <DropdownMenu>
@@ -79,7 +86,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
         >
           Complete
         </DropdownMenuItem>
-        <DropdownMenuItem disabled={row.original.deleted}>
+        <DropdownMenuItem onClick={cancel} disabled={row.original.deleted}>
           Cancel
         </DropdownMenuItem>
         <DropdownMenuItem

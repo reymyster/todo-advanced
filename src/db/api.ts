@@ -157,3 +157,12 @@ export const useTodoReopenMutation = createMutation({
   mutationFn: reopenTodos,
   queryKey: [QUERY_KEYS.TODOS],
 });
+
+async function cancelTodos(ids: number[]) {
+  return await apiPOST("todos/cancel", ids);
+}
+
+export const useTodoCancelMutation = createMutation({
+  mutationFn: cancelTodos,
+  queryKey: [QUERY_KEYS.TODOS],
+});
