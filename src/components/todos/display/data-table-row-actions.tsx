@@ -4,7 +4,11 @@ import { useState } from "react";
 import { DotsHorizontalIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { Row } from "@tanstack/react-table";
 import { ToDoDisplay, statuses } from "./data";
-import { useTodoCompleteMutation, useTodoDuplicateMutation } from "@/db/api";
+import {
+  useTodoCompleteMutation,
+  useTodoDuplicateMutation,
+  useTodoReopenMutation,
+} from "@/db/api";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
@@ -39,7 +43,15 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
     await duplicateMutation.mutateAsync([todoID]);
   };
 
-  const isLoading = completeMutation.isLoading || duplicateMutation.isLoading;
+  const reopenMutation = useTodoReopenMutation();
+  const reopenTodo = async () => {
+    await reopenMutation.mutateAsync([todoID]);
+  };
+
+  const isLoading =
+    completeMutation.isLoading ||
+    duplicateMutation.isLoading ||
+    reopenMutation.isLoading;
 
   return (
     <DropdownMenu>
@@ -69,6 +81,12 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
         </DropdownMenuItem>
         <DropdownMenuItem disabled={row.original.deleted}>
           Cancel
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={reopenTodo}
+          disabled={row.original.status === "open"}
+        >
+          Re-Open
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

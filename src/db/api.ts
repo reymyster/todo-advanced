@@ -1,5 +1,11 @@
 import { Category, NewCategory, ToDo, NewToDo } from "./types";
-import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  useQuery,
+  MutationFunction,
+  QueryKey,
+} from "@tanstack/react-query";
 
 const QUERY_KEYS = {
   CATEGORIES: "categories",
@@ -61,37 +67,43 @@ export function useCategories() {
   return query;
 }
 
+function createMutation<TData, TVar>({
+  mutationFn,
+  queryKey,
+}: {
+  mutationFn: MutationFunction<TData, TVar>;
+  queryKey: QueryKey | undefined;
+}) {
+  return function (args?: { onSuccess?: () => void }) {
+    const client = useQueryClient();
+    const mutation = useMutation({
+      mutationFn,
+      onSuccess: () => {
+        client.invalidateQueries({ queryKey });
+        args?.onSuccess?.();
+      },
+    });
+    return mutation;
+  };
+}
+
 async function insertCategory(item: NewCategory) {
   return await apiPOST("categories", item);
 }
 
-export function useCategoryCreateMutation(args?: { onSuccess?: () => void }) {
-  const client = useQueryClient();
-  const mutation = useMutation({
-    mutationFn: insertCategory,
-    onSuccess: () => {
-      client.invalidateQueries({ queryKey: [QUERY_KEYS.CATEGORIES] });
-      args?.onSuccess?.();
-    },
-  });
-  return mutation;
-}
+export const useCategoryCreateMutation = createMutation({
+  mutationFn: insertCategory,
+  queryKey: [QUERY_KEYS.CATEGORIES],
+});
 
 async function deleteCategory(id: number) {
   return await apiDELETE(`categories/${id}`);
 }
 
-export function useCategoryDeleteMutation(args?: { onSuccess?: () => void }) {
-  const client = useQueryClient();
-  const mutation = useMutation({
-    mutationFn: deleteCategory,
-    onSuccess: () => {
-      client.invalidateQueries({ queryKey: [QUERY_KEYS.CATEGORIES] });
-      args?.onSuccess?.();
-    },
-  });
-  return mutation;
-}
+export const useCategoryDeleteMutation = createMutation({
+  mutationFn: deleteCategory,
+  queryKey: [QUERY_KEYS.CATEGORIES],
+});
 
 async function fetchAllTodos() {
   const Todos: ToDo[] = await apiGET("todos");
@@ -114,46 +126,34 @@ async function insertTodo(item: NewToDo) {
   return await apiPOST("todos", item);
 }
 
-export function useTodoCreateMutation(args?: { onSuccess?: () => void }) {
-  const client = useQueryClient();
-  const mutation = useMutation({
-    mutationFn: insertTodo,
-    onSuccess: () => {
-      client.invalidateQueries({ queryKey: [QUERY_KEYS.TODOS] });
-      args?.onSuccess?.();
-    },
-  });
-  return mutation;
-}
+export const useTodoCreateMutation = createMutation({
+  mutationFn: insertTodo,
+  queryKey: [QUERY_KEYS.TODOS],
+});
 
 async function completeTodos(ids: number[]) {
   return await apiPOST("todos/complete", ids);
 }
 
-export function useTodoCompleteMutation(args?: { onSuccess?: () => void }) {
-  const client = useQueryClient();
-  const mutation = useMutation({
-    mutationFn: completeTodos,
-    onSuccess: () => {
-      client.invalidateQueries({ queryKey: [QUERY_KEYS.TODOS] });
-      args?.onSuccess?.();
-    },
-  });
-  return mutation;
-}
+export const useTodoCompleteMutation = createMutation({
+  mutationFn: completeTodos,
+  queryKey: [QUERY_KEYS.TODOS],
+});
 
 async function duplicateTodos(ids: number[]) {
   return await apiPOST("todos/duplicate", ids);
 }
 
-export function useTodoDuplicateMutation(args?: { onSuccess?: () => void }) {
-  const client = useQueryClient();
-  const mutation = useMutation({
-    mutationFn: duplicateTodos,
-    onSuccess: () => {
-      client.invalidateQueries({ queryKey: [QUERY_KEYS.TODOS] });
-      args?.onSuccess?.();
-    },
-  });
-  return mutation;
+export const useTodoDuplicateMutation = createMutation({
+  mutationFn: duplicateTodos,
+  queryKey: [QUERY_KEYS.TODOS],
+});
+
+async function reopenTodos(ids: number[]) {
+  return await apiPOST("todos/reopen", ids);
 }
+
+export const useTodoReopenMutation = createMutation({
+  mutationFn: reopenTodos,
+  queryKey: [QUERY_KEYS.TODOS],
+});
