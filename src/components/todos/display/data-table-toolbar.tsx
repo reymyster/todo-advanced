@@ -32,6 +32,12 @@ export function DataTableToolbar<TData>({
     JSON.stringify(initialColumnFilters);
 
   const isFetching = useStore((state) => state.isFetching);
+  const isRowMutating = useStore((state) => state.isRowMutating);
+  const areSelectedRowsMutating = useStore(
+    (state) => state.areSelectedRowsMutating,
+  );
+
+  const isDataChanging = isFetching || isRowMutating || areSelectedRowsMutating;
 
   return (
     <div className="flex items-center justify-between">
@@ -69,7 +75,7 @@ export function DataTableToolbar<TData>({
         )}
       </div>
       <div className="flex items-center space-x-2">
-        {isFetching && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
+        {isDataChanging && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
         <Button
           variant="outline"
           size="sm"

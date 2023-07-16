@@ -64,13 +64,21 @@ export const initialColumnFilters: ColumnFiltersState = [
 
 type State = {
   isFetching: boolean;
+  isRowMutating: boolean;
+  areSelectedRowsMutating: boolean;
 };
 
 type Action = {
   setIsFetching: (f: State["isFetching"]) => void;
+  setRowMutating: (f: State["isRowMutating"]) => void;
+  setSelectedRowsMutating: (f: State["isFetching"]) => void;
 };
 
 export const useStore = create<State & Action>((set) => ({
   isFetching: false,
+  isRowMutating: false,
+  areSelectedRowsMutating: false,
   setIsFetching: (f) => set(() => ({ isFetching: f })),
+  setRowMutating: (f) => set(() => ({ isRowMutating: f })),
+  setSelectedRowsMutating: (f) => set(() => ({ areSelectedRowsMutating: f })),
 }));

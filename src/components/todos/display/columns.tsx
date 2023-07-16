@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ToDoDisplay, statuses } from "./data";
+import { ToDoDisplay, statuses, useStore } from "./data";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { ReloadIcon } from "@radix-ui/react-icons";
@@ -29,12 +29,26 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { DataTableRowActions } from "./data-table-row-actions";
+import { useEffect } from "react";
 
 export function useColumns(): ColumnDef<ToDoDisplay>[] {
   const completeMutation = useTodoCompleteMutation();
   const duplicateMutation = useTodoDuplicateMutation();
   const reopenMutation = useTodoReopenMutation();
   const cancelMutation = useTodoCancelMutation();
+  const setSelectedRowsMutating = useStore(
+    (state) => state.setSelectedRowsMutating,
+  );
+
+  const isMutating =
+    completeMutation.isLoading ||
+    duplicateMutation.isLoading ||
+    reopenMutation.isLoading ||
+    cancelMutation.isLoading;
+  useEffect(
+    () => setSelectedRowsMutating(isMutating),
+    [setSelectedRowsMutating, isMutating],
+  );
 
   return [
     {
@@ -145,13 +159,7 @@ export function useColumns(): ColumnDef<ToDoDisplay>[] {
                 className="mx-auto h-8 lg:flex"
                 disabled={rows.length === 0 || isLoading}
               >
-                <ReloadIcon
-                  className={cn(
-                    "h-4 w-4 animate-spin mx-4",
-                    !isLoading && "hidden",
-                  )}
-                />
-                <span className={cn(isLoading && "hidden")}>Actions</span>
+                <span>Actions</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">

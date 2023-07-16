@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DotsHorizontalIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { Row } from "@tanstack/react-table";
-import { ToDoDisplay, statuses } from "./data";
+import { ToDoDisplay, statuses, useStore } from "./data";
 import {
   useTodoCompleteMutation,
   useTodoDuplicateMutation,
@@ -33,6 +33,7 @@ interface DataTableRowActionsProps {
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const todoID = row.original.id;
+  const setRowMutating = useStore((state) => state.setRowMutating);
 
   const completeMutation = useTodoCompleteMutation();
   const markComplete = async () => {
@@ -59,6 +60,8 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
     duplicateMutation.isLoading ||
     reopenMutation.isLoading ||
     cancelMutation.isLoading;
+
+  useEffect(() => setRowMutating(isLoading), [setRowMutating, isLoading]);
 
   return (
     <DropdownMenu>
