@@ -51,7 +51,6 @@ const formSchema = z.object({
 });
 
 export default function NewTodo() {
-  const [isSaving, setIsSaving] = useState(false);
   const { data: categories } = useCategories();
   const router = useRouter();
 
@@ -70,7 +69,6 @@ export default function NewTodo() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsSaving(true);
     await mutation.mutateAsync({
       categoryId: values.categoryId,
       title: values.title,
@@ -235,7 +233,7 @@ export default function NewTodo() {
                 <ReloadIcon
                   className={cn(
                     "mr-2 h-4 w-4 animate-spin",
-                    !isSaving && "hidden",
+                    !mutation.isLoading && "hidden",
                   )}
                 />
                 Save
