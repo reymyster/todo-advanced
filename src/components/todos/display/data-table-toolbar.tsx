@@ -1,6 +1,6 @@
 "use client";
 
-import { Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
+import { Cross2Icon, PlusIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,7 +9,12 @@ import Link from "next/link";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import { DataTableViewOptions } from "./data-table-view-options";
 
-import { statuses, ColumnFilterValue, initialColumnFilters } from "./data";
+import {
+  statuses,
+  ColumnFilterValue,
+  initialColumnFilters,
+  useStore,
+} from "./data";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -25,6 +30,8 @@ export function DataTableToolbar<TData>({
   const areFiltersChanged =
     JSON.stringify(table.getState().columnFilters) !==
     JSON.stringify(initialColumnFilters);
+
+  const isFetching = useStore((state) => state.isFetching);
 
   return (
     <div className="flex items-center justify-between">
@@ -62,6 +69,7 @@ export function DataTableToolbar<TData>({
         )}
       </div>
       <div className="flex items-center space-x-2">
+        {isFetching && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
         <Button
           variant="outline"
           size="sm"

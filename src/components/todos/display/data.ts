@@ -63,15 +63,14 @@ export const initialColumnFilters: ColumnFiltersState = [
 ];
 
 type State = {
-  initialColumnFilters: ColumnFiltersState;
+  isFetching: boolean;
 };
 
 type Action = {
-  setInitialColumnFilters: (filter: State["initialColumnFilters"]) => void;
+  setIsFetching: (f: State["isFetching"]) => void;
 };
 
 export const useStore = create<State & Action>((set) => ({
-  initialColumnFilters: [{ id: "status", value: ["open"] }],
-  setInitialColumnFilters: (filter) =>
-    set(() => ({ initialColumnFilters: filter })),
+  isFetching: false,
+  setIsFetching: (f) => set(() => ({ isFetching: f })),
 }));

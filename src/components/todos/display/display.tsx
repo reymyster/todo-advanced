@@ -1,9 +1,10 @@
 "use client";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { UseQueryResult } from "@tanstack/react-query";
 import { PlusIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { ToDo, Category } from "@/db/types";
 import ToDoTable from "./table";
+import { useStore } from "./data";
 
 export default function Display({
   query,
@@ -14,12 +15,19 @@ export default function Display({
   queryCategory: UseQueryResult<Category[], unknown>;
   newTodoURL: string;
 }) {
-  const { isLoading, error, data } = query;
+  const { isLoading, error, data, isFetching: todosFetching } = query;
   const {
     isLoading: categoriesLoading,
     error: categoriesError,
     data: categories,
+    isFetching: categoriesFetching,
   } = queryCategory;
+  const setIsFetching = useStore((state) => state.setIsFetching);
+
+  useEffect(
+    () => setIsFetching(todosFetching || categoriesFetching),
+    [todosFetching, categoriesFetching],
+  );
 
   if (isLoading || categoriesLoading)
     return (
