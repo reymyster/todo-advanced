@@ -7,7 +7,7 @@ import {
   ColumnFilterValue,
   useStore,
 } from "./data";
-import { columnsAll } from "./columns";
+import { useColumns } from "./columns";
 
 export default function ToDoTable({
   data,
@@ -18,6 +18,8 @@ export default function ToDoTable({
   categories: Category[];
   newTodoURL: string;
 }) {
+  const columns = useColumns();
+
   const displayData = useMemo(
     () => transformToDosForTableDisplay({ todos: data, categories }),
     [data, categories],
@@ -34,7 +36,7 @@ export default function ToDoTable({
   return (
     <div>
       <DataTable
-        columns={columnsAll}
+        columns={columns}
         data={displayData}
         categoriesForFiltering={categoriesForFiltering}
         newTodoURL={newTodoURL}

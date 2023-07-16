@@ -26,7 +26,7 @@ export default function Display({
 
   useEffect(
     () => setIsFetching(todosFetching || categoriesFetching),
-    [todosFetching, categoriesFetching],
+    [todosFetching, categoriesFetching, setIsFetching],
   );
 
   if (isLoading || categoriesLoading)
