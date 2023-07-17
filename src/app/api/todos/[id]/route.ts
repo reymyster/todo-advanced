@@ -9,9 +9,9 @@ export const runtime = "edge";
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: number } },
+  { params }: { params: { id: string } },
 ) {
-  const id = Number(params.id); // so dumb, why is this needed
+  const id = Number(params.id);
   const db = getDBSingle();
 
   const item: ToDo = await request.json();
