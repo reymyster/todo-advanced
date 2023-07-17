@@ -38,6 +38,22 @@ async function apiPOST(endpoint: string, body: any) {
   return true;
 }
 
+async function apiPUT(endpoint: string, body: any) {
+  const response = await fetch(`/api/${endpoint}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Error putting /api/${endpoint}: ${response.statusText}`);
+  }
+
+  return true;
+}
+
 async function apiDELETE(endpoint: string) {
   const response = await fetch(`/api/${endpoint}`, {
     method: "DELETE",
@@ -164,5 +180,14 @@ async function cancelTodos(ids: number[]) {
 
 export const useTodoCancelMutation = createMutation({
   mutationFn: cancelTodos,
+  queryKey: [QUERY_KEYS.TODOS],
+});
+
+async function editTodo(todo: ToDo) {
+  return await apiPUT(`todos/${todo.id}`, todo);
+}
+
+export const useTodoEditMutation = createMutation({
+  mutationFn: editTodo,
   queryKey: [QUERY_KEYS.TODOS],
 });

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useCallback } from "react";
 import { DotsHorizontalIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { Row } from "@tanstack/react-table";
 import { ToDoDisplay, statuses, useStore } from "./data";
@@ -11,6 +11,7 @@ import {
   useTodoCancelMutation,
 } from "@/db/api";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -34,6 +35,12 @@ interface DataTableRowActionsProps {
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const todoID = row.original.id;
   const setRowMutating = useStore((state) => state.setRowMutating);
+  const router = useRouter();
+
+  const edit = useCallback(
+    () => router.push(`/todo/edit/${todoID}`),
+    [router, todoID],
+  );
 
   const completeMutation = useTodoCompleteMutation();
   const markComplete = async () => {
@@ -80,7 +87,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>Edit</DropdownMenuItem>
+        <DropdownMenuItem onClick={edit}>Edit</DropdownMenuItem>
         <DropdownMenuItem onClick={duplicateTodo}>Make a copy</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
