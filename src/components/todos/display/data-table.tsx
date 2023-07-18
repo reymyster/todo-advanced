@@ -43,6 +43,7 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
     initialColumnFilters ?? [],
   );
+  const globalFilter = useStore((state) => state.globalFilter);
 
   const table = useReactTable({
     data,
@@ -52,6 +53,7 @@ export function DataTable<TData, TValue>({
     },
     state: {
       columnFilters,
+      globalFilter,
     },
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),

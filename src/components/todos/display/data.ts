@@ -66,19 +66,23 @@ type State = {
   isFetching: boolean;
   isRowMutating: boolean;
   areSelectedRowsMutating: boolean;
+  globalFilter: string;
 };
 
 type Action = {
   setIsFetching: (f: State["isFetching"]) => void;
   setRowMutating: (f: State["isRowMutating"]) => void;
   setSelectedRowsMutating: (f: State["isFetching"]) => void;
+  setGlobalFilter: (f: State["globalFilter"]) => void;
 };
 
 export const useStore = create<State & Action>((set) => ({
   isFetching: false,
   isRowMutating: false,
   areSelectedRowsMutating: false,
+  globalFilter: "",
   setIsFetching: (f) => set(() => ({ isFetching: f })),
   setRowMutating: (f) => set(() => ({ isRowMutating: f })),
   setSelectedRowsMutating: (f) => set(() => ({ areSelectedRowsMutating: f })),
+  setGlobalFilter: (f) => set(() => ({ globalFilter: f })),
 }));
