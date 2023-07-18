@@ -12,6 +12,7 @@ import {
 } from "@/db/api";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -87,7 +88,11 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem onClick={edit}>Edit</DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href={`/todo/edit/${todoID}`} prefetch={false}>
+            Edit
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuItem onClick={duplicateTodo}>Make a copy</DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
