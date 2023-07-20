@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Row } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ToDoDisplay, statuses, useStore } from "./data";
 import { format } from "date-fns";
@@ -31,7 +31,9 @@ import {
 import { DataTableRowActions } from "./data-table-row-actions";
 import { useEffect } from "react";
 
-export function useColumns(): ColumnDef<ToDoDisplay>[] {
+export function useColumns(args?: {
+  categoryFilterID?: number | null;
+}): ColumnDef<ToDoDisplay>[] {
   const completeMutation = useTodoCompleteMutation();
   const duplicateMutation = useTodoDuplicateMutation();
   const reopenMutation = useTodoReopenMutation();
@@ -39,6 +41,7 @@ export function useColumns(): ColumnDef<ToDoDisplay>[] {
   const setSelectedRowsMutating = useStore(
     (state) => state.setSelectedRowsMutating,
   );
+  const categoryFilterID = args?.categoryFilterID;
 
   const isMutating =
     completeMutation.isLoading ||
@@ -80,13 +83,17 @@ export function useColumns(): ColumnDef<ToDoDisplay>[] {
       accessorKey: "description",
       header: "Description",
     },
-    {
-      accessorKey: "categoryName",
-      header: "Category",
-      filterFn: (row, id, value) => {
-        return value.includes(row.getValue(id));
-      },
-    },
+    ...(!categoryFilterID
+      ? [
+          {
+            accessorKey: "categoryName",
+            header: "Category",
+            filterFn: (row: Row<ToDoDisplay>, id: string, value: any) => {
+              return value.includes(row.getValue(id));
+            },
+          },
+        ]
+      : []),
     {
       accessorKey: "due",
       header: "Due",

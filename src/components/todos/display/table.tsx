@@ -18,8 +18,8 @@ export default function ToDoTable({
   categories: Category[];
   newTodoURL: string;
 }) {
-  const columns = useColumns();
   const categoryFilterID = useStore((state) => state.categoryFilterID);
+  const columns = useColumns({ categoryFilterID });
 
   const displayData = useMemo(
     () =>

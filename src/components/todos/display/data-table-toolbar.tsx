@@ -30,6 +30,7 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   const globalFilter = useStore((state) => state.globalFilter);
   const setGlobalFilter = useStore((state) => state.setGlobalFilter);
+  const categoryFilterID = useStore((state) => state.categoryFilterID);
 
   const areFiltersChanged =
     !!globalFilter ||
@@ -65,7 +66,7 @@ export function DataTableToolbar<TData>({
             options={statuses}
           />
         )}
-        {table.getColumn("categoryName") && (
+        {!categoryFilterID && table.getColumn("categoryName") && (
           <DataTableFacetedFilter
             column={table.getColumn("categoryName")}
             title="Category"
