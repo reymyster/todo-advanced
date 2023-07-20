@@ -50,9 +50,9 @@ export default function DesktopNavMenu() {
         (c) =>
           ({
             title: c.name,
-            href: `/categories/${c.name?.replaceAll(" ", "_").toLowerCase()}`,
+            href: `/categories/${c.id}`,
             description: c.description,
-          } as IMenuItem)
+          }) as IMenuItem,
       );
 
     setComponents(menuCategories);
@@ -111,7 +111,7 @@ const ListItem = React.forwardRef<
             ref={ref}
             className={cn(
               "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-              className
+              className,
             )}
             {...props}
           >
