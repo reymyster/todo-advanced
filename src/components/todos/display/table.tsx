@@ -19,10 +19,16 @@ export default function ToDoTable({
   newTodoURL: string;
 }) {
   const columns = useColumns();
+  const categoryFilterID = useStore((state) => state.categoryFilterID);
 
   const displayData = useMemo(
-    () => transformToDosForTableDisplay({ todos: data, categories }),
-    [data, categories],
+    () =>
+      transformToDosForTableDisplay({
+        todos: data,
+        categories,
+        categoryFilterID,
+      }),
+    [data, categories, categoryFilterID],
   );
 
   const categoriesForFiltering = useMemo(
