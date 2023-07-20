@@ -9,8 +9,8 @@ export default function Footer() {
 
   return (
     <motion.div style={{ bottom }} className="fixed left-0 right-0">
-      <footer className="bg-gray-800 py-4">
-        <div className="text-center text-[10px] text-white">
+      <footer className="bg-background py-4">
+        <div className="text-center text-[10px] text-primary">
           Copyright &copy; {year}
         </div>
       </footer>
