@@ -37,5 +37,5 @@ export async function POST(request: NextRequest) {
 
   if (inserted.length > 0) revalidatePath("/api/todos");
 
-  return NextResponse.json(inserted);
+  return NextResponse.json(inserted.map((i) => i.insertedId));
 }

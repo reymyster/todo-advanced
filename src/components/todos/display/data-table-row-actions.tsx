@@ -28,6 +28,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useToast } from "@/components/ui/use-toast";
 
 interface DataTableRowActionsProps {
   row: Row<ToDoDisplay>;
@@ -37,28 +38,47 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   const todoID = row.original.id;
   const setRowMutating = useStore((state) => state.setRowMutating);
   const router = useRouter();
+  const { toast } = useToast();
 
   const edit = useCallback(
     () => router.push(`/todo/edit/${todoID}`),
     [router, todoID],
   );
 
-  const completeMutation = useTodoCompleteMutation();
+  function onModified(data: number[]) {
+    console.log(`got here? ${data.length}`);
+    toast({
+      description: `${data.length} ${
+        data.length === 1 ? "item has" : "items have"
+      } been modified.`,
+    });
+  }
+
+  function onCreated(data: number[]) {
+    console.log(`got here2? ${data.length}`);
+    toast({
+      description: `${data.length} ${
+        data.length === 1 ? "item has" : "items have"
+      } been created.`,
+    });
+  }
+
+  const completeMutation = useTodoCompleteMutation({ onSuccess: onModified });
   const markComplete = async () => {
     await completeMutation.mutateAsync([todoID]);
   };
 
-  const duplicateMutation = useTodoDuplicateMutation();
+  const duplicateMutation = useTodoDuplicateMutation({ onSuccess: onCreated });
   const duplicateTodo = async () => {
     await duplicateMutation.mutateAsync([todoID]);
   };
 
-  const reopenMutation = useTodoReopenMutation();
+  const reopenMutation = useTodoReopenMutation({ onSuccess: onModified });
   const reopenTodo = async () => {
     await reopenMutation.mutateAsync([todoID]);
   };
 
-  const cancelMutation = useTodoCancelMutation();
+  const cancelMutation = useTodoCancelMutation({ onSuccess: onModified });
   const cancel = async () => {
     await cancelMutation.mutateAsync([todoID]);
   };

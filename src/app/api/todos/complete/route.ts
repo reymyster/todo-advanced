@@ -21,5 +21,5 @@ export async function POST(request: NextRequest) {
 
   if (updated.length > 0) revalidatePath("/api/todos");
 
-  return NextResponse.json(updated);
+  return NextResponse.json(updated.map((u) => u.updatedId));
 }

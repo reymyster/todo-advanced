@@ -27,6 +27,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useToast } from "@/components/ui/use-toast";
 
 import { DataTableRowActions } from "./data-table-row-actions";
 import { useEffect } from "react";
@@ -34,10 +35,30 @@ import { useEffect } from "react";
 export function useColumns(args?: {
   categoryFilterID?: number | null;
 }): ColumnDef<ToDoDisplay>[] {
-  const completeMutation = useTodoCompleteMutation();
-  const duplicateMutation = useTodoDuplicateMutation();
-  const reopenMutation = useTodoReopenMutation();
-  const cancelMutation = useTodoCancelMutation();
+  const { toast } = useToast();
+
+  function onModified(data: number[]) {
+    console.log(`got here? ${data.length}`);
+    toast({
+      description: `${data.length} ${
+        data.length === 1 ? "item has" : "items have"
+      } been modified.`,
+    });
+  }
+
+  function onCreated(data: number[]) {
+    console.log(`got here2? ${data.length}`);
+    toast({
+      description: `${data.length} ${
+        data.length === 1 ? "item has" : "items have"
+      } been created.`,
+    });
+  }
+
+  const completeMutation = useTodoCompleteMutation({ onSuccess: onModified });
+  const duplicateMutation = useTodoDuplicateMutation({ onSuccess: onCreated });
+  const reopenMutation = useTodoReopenMutation({ onSuccess: onModified });
+  const cancelMutation = useTodoCancelMutation({ onSuccess: onModified });
   const setSelectedRowsMutating = useStore(
     (state) => state.setSelectedRowsMutating,
   );

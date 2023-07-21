@@ -5,6 +5,7 @@ import Title from "./title";
 import Footer from "./footer";
 import { QueryProvider } from "./queryprovider";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -51,6 +52,7 @@ export default function RootLayout({
               </main>
               <Footer />
             </div>
+            <Toaster />
           </ThemeProvider>
         </QueryProvider>
       </body>

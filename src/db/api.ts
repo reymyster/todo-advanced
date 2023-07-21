@@ -35,7 +35,7 @@ async function apiPOST(endpoint: string, body: any) {
     throw new Error(`Error posting /api/${endpoint}: ${response.statusText}`);
   }
 
-  return true;
+  return await response.json();
 }
 
 async function apiPUT(endpoint: string, body: any) {
@@ -51,7 +51,7 @@ async function apiPUT(endpoint: string, body: any) {
     throw new Error(`Error putting /api/${endpoint}: ${response.statusText}`);
   }
 
-  return true;
+  return await response.json();
 }
 
 async function apiDELETE(endpoint: string) {
@@ -90,13 +90,13 @@ function createMutation<TData, TVar>({
   mutationFn: MutationFunction<TData, TVar>;
   queryKey: QueryKey | undefined;
 }) {
-  return function (args?: { onSuccess?: () => void }) {
+  return function (args?: { onSuccess?: (data: TData) => void }) {
     const client = useQueryClient();
     const mutation = useMutation({
       mutationFn,
-      onSuccess: () => {
+      onSuccess: (data: TData) => {
         client.invalidateQueries({ queryKey });
-        args?.onSuccess?.();
+        args?.onSuccess?.(data);
       },
     });
     return mutation;
@@ -147,7 +147,7 @@ export const useTodoCreateMutation = createMutation({
   queryKey: [QUERY_KEYS.TODOS],
 });
 
-async function completeTodos(ids: number[]) {
+async function completeTodos(ids: number[]): Promise<number[]> {
   return await apiPOST("todos/complete", ids);
 }
 
@@ -156,7 +156,7 @@ export const useTodoCompleteMutation = createMutation({
   queryKey: [QUERY_KEYS.TODOS],
 });
 
-async function duplicateTodos(ids: number[]) {
+async function duplicateTodos(ids: number[]): Promise<number[]> {
   return await apiPOST("todos/duplicate", ids);
 }
 
@@ -165,7 +165,7 @@ export const useTodoDuplicateMutation = createMutation({
   queryKey: [QUERY_KEYS.TODOS],
 });
 
-async function reopenTodos(ids: number[]) {
+async function reopenTodos(ids: number[]): Promise<number[]> {
   return await apiPOST("todos/reopen", ids);
 }
 
@@ -174,7 +174,7 @@ export const useTodoReopenMutation = createMutation({
   queryKey: [QUERY_KEYS.TODOS],
 });
 
-async function cancelTodos(ids: number[]) {
+async function cancelTodos(ids: number[]): Promise<number[]> {
   return await apiPOST("todos/cancel", ids);
 }
 
