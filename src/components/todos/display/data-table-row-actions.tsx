@@ -46,7 +46,6 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   );
 
   function onModified(data: number[]) {
-    console.log(`got here? ${data.length}`);
     toast({
       description: `${data.length} ${
         data.length === 1 ? "item has" : "items have"
@@ -55,7 +54,6 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps) {
   }
 
   function onCreated(data: number[]) {
-    console.log(`got here2? ${data.length}`);
     toast({
       description: `${data.length} ${
         data.length === 1 ? "item has" : "items have"
